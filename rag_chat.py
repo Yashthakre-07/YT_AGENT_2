@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+client = Groq(api_key=os.getenv("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"))
 
 
 def ask_llm(prompt):
@@ -16,5 +16,6 @@ def ask_llm(prompt):
         ],
         temperature=0.3
     )
+
 
     return completion.choices[0].message.content
