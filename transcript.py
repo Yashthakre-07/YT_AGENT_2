@@ -20,16 +20,13 @@ def fetch_transcript(url):
         return "Invalid YouTube URL"
 
     try:
+        # fetch transcript
+        transcript = YouTubeTranscriptApi.get_transcript(video_id)
 
-        # fetch any available transcript
-        transcript = YouTubeTranscriptApi().fetch(video_id)
-
-        text = " ".join([item.text for item in transcript])
+        text = " ".join([item["text"] for item in transcript])
 
         return text
 
     except Exception as e:
-
         print("Transcript error:", e)
-
-        return "Transcript not available."
+        return "Transcript not available for this video."
