@@ -1,6 +1,5 @@
-
-
 flask
 requests
 youtube-transcript-api
 groq
+gunicorn
