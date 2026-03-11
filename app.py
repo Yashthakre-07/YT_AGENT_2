@@ -1,8 +1,12 @@
+import os
 from flask import Flask, request, jsonify, render_template
 from transcript import fetch_transcript
 from rag_chat import ask_llm
 
-app = Flask(__name__)
+app = Flask(
+    __name__,
+    template_folder=os.path.join(os.path.dirname(__file__), "templates")
+)
 
 video_context = ""
 
@@ -19,12 +23,10 @@ def process_video():
     data = request.json
     url = data["url"]
 
-    try:
-        transcript = fetch_transcript(url)
-        video_context = transcript
-        return jsonify({"message": "Video processed successfully"})
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    transcript = fetch_transcript(url)
+    video_context = transcript
+
+    return jsonify({"message": "Video processed successfully"})
 
 
 @app.route("/chat", methods=["POST"])
@@ -37,17 +39,13 @@ def chat():
 
     if language == "hindi":
         instruction = "Answer ONLY in Hindi language."
-
     elif language == "english":
         instruction = "Answer ONLY in English language."
-
     elif language == "both":
         instruction = "First answer in English, then answer in Hindi."
-
     else:
         instruction = "Answer in English."
 
-    # limit transcript size to avoid token errors
     context = video_context[:12000]
 
     prompt = f"""
@@ -62,8 +60,6 @@ Question:
 {question}
 """
 
-    try:
-        answer = ask_llm(prompt)
-        return jsonify({"answer": answer})
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    answer = ask_llm(prompt)
+
+    return jsonify({"answer": answer})
