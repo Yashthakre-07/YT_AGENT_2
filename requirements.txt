@@ -3,3 +3,4 @@ requests
 youtube-transcript-api
 groq
 gunicorn
+python-dotenv
