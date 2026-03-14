@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-client = Groq(api_key=os.getenv("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"))
+client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
 
 def ask_llm(prompt):
